@@ -1,0 +1,976 @@
+/* ==========================================================================
+   Portfolio design system
+   Based on the Work page. Every page links this file; page-specific layout
+   lives at the bottom under "Page patterns".
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  /* Color */
+  --color-bg: #ffffff;
+  --color-surface: #e3e6f2;      /* nav bar, buttons, pills, tags, icon tiles */
+  --color-placeholder: #acb2c0;  /* image / media placeholders */
+  /* Alternating fills shown behind transparent images */
+  --tone-1: #e3e6f2;
+  --tone-2: #c8cde0;
+  --tone-3: #acb2c0;
+  --color-ink: #111111;          /* primary text */
+  --color-muted: #9a9ca8;        /* secondary / body copy */
+  --color-border: rgba(17, 17, 17, 0.08);
+  --color-on-ink: #ffffff;       /* text on an ink background (active states) */
+
+  /* Typography */
+  --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --text-xs: 13px;                          /* tags */
+  --text-sm: 16px;
+  --text-base: 18px;                        /* nav copy */
+  --text-md: 20px;                          /* pills, roles */
+  --text-body: clamp(16px, 1.4vw, 21px);    /* descriptions */
+  --text-lead: clamp(18px, 2.1vw, 32px);    /* about copy */
+  --text-heading: clamp(26px, 2.6vw, 38px); /* labels, entry titles */
+  --text-display: clamp(3.4rem, 8vw, 7rem); /* section titles */
+  --weight-regular: 400;
+  --leading-tight: 1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.45;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 28px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 100px;
+  --gutter: var(--space-6);
+
+  /* Shape & depth */
+  --radius-sm: 4px;
+  --radius-md: 14px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+  --shadow-raised: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+  :root {
+    --gutter: 18px;
+  }
+}
+
+/* ---------- 2. Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Always respect the hidden attribute, even on elements with a display rule */
+[hidden] {
+  display: none !important;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------- 3. Layout ---------- */
+.container {
+  padding: var(--space-4) var(--gutter) var(--space-7);
+}
+
+.section + .section {
+  margin-top: var(--space-9);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+/* ---------- 4. Components ---------- */
+
+/* Top bar: name + bio. Scrolls away with the page. */
+.topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+  padding: var(--space-3) var(--gutter) var(--space-7);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.logo {
+  font-size: 30px;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.topbar-copy {
+  max-width: 660px;
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+/* Site nav: sticks to the top of the screen while scrolling */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: var(--space-3) var(--gutter);
+  padding-top: calc(var(--space-3) + env(safe-area-inset-top, 0px));
+  background: var(--color-bg);
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) 34px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  font-size: 22px;
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
+}
+
+/* Type */
+.display {
+  margin: 0;
+  font-size: var(--text-display);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
+}
+
+.heading {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-regular);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.lead {
+  margin: 0;
+  font-size: var(--text-lead);
+  line-height: var(--leading-normal);
+}
+
+.body {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-snug);
+  color: var(--color-muted);
+}
+
+/* Round icon button (arrows) */
+.icon-button {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  font-size: 28px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Pill button (filters) */
+.pill {
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-6);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  font: inherit;
+  font-size: var(--text-md);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.pill[aria-pressed="true"] {
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+}
+
+/* Non-interactive pill (labels on a project page) */
+.pill--static {
+  cursor: default;
+}
+
+/* Small tag (e.g. "Work") */
+.tag {
+  flex: none;
+  padding: var(--space-2) 10px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  font-size: var(--text-xs);
+}
+
+/* Media placeholder / project card */
+.card {
+  display: block;
+  background: var(--color-placeholder);
+  border-radius: var(--radius-lg);
+}
+
+a.card {
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+a.card:hover,
+a.card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Cards showing a real image: no gray fill and no box shadow, so
+   transparent PNGs keep their transparency */
+/* Cards with an image: fill with an alternating palette tone, visible
+   only through transparent PNGs. The Work page filter script re-sets
+   --tone on visible cards so the pattern stays even after filtering. */
+.card:has(> img) {
+  background: var(--tone, var(--tone-1));
+}
+
+.work-grid .card:nth-child(3n + 1) { --tone: var(--tone-1); }
+.work-grid .card:nth-child(3n + 2) { --tone: var(--tone-2); }
+.work-grid .card:nth-child(3n + 3) { --tone: var(--tone-3); }
+
+a.card:has(> img):hover,
+a.card:has(> img):focus-visible {
+  box-shadow: none;
+}
+
+/* Card overlay: white title + glowing pills over a dark gradient.
+   Work page cards show it on hover; the featured home card always does. */
+a.card {
+  position: relative;
+  text-decoration: none;
+}
+
+.card:has(> .card-info)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to top, rgba(12, 8, 24, 0.75) 0%, rgba(12, 8, 24, 0.35) 40%, rgba(12, 8, 24, 0) 70%),
+    linear-gradient(to right, rgba(12, 8, 24, 0.45) 0%, rgba(12, 8, 24, 0) 60%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.card-info {
+  position: absolute;
+  z-index: 2;
+  left: var(--space-5);
+  right: var(--space-5);
+  bottom: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+a.card:hover::after,
+a.card:focus-visible::after,
+a.card:hover .card-info,
+a.card:focus-visible .card-info {
+  opacity: 1;
+  transform: none;
+}
+
+.card-title {
+  margin: 0;
+  font-size: clamp(24px, 2.2vw, 34px);
+  font-weight: var(--weight-regular);
+  line-height: 1.1;
+  color: var(--color-on-ink);
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card-tags .pill {
+  padding: 6px var(--space-4);
+  font-size: var(--text-sm);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.45);
+}
+
+/* Featured card (home page): bigger, and always visible */
+.card--feature::after,
+.card--feature .card-info {
+  opacity: 1;
+  transform: none;
+}
+
+.card--feature .card-info {
+  left: var(--space-7);
+  right: var(--space-7);
+  bottom: var(--space-7);
+  gap: var(--space-6);
+}
+
+.card--feature .card-title {
+  font-size: clamp(36px, 4.6vw, 64px);
+}
+
+.card--feature .card-tags {
+  gap: var(--space-6);
+}
+
+.card--feature .card-tags .pill {
+  padding: var(--space-2) var(--space-6);
+  font-size: var(--text-md);
+}
+
+@media (max-width: 600px) {
+  .card--feature .card-info {
+    left: var(--space-5);
+    right: var(--space-5);
+    bottom: var(--space-5);
+    gap: var(--space-4);
+  }
+
+  .card--feature .card-tags {
+    gap: var(--space-3);
+  }
+
+  .card--feature .card-tags .pill {
+    padding: 6px var(--space-4);
+    font-size: var(--text-sm);
+  }
+}
+
+/* Touch screens can't hover: keep the overlay visible */
+@media (hover: none) {
+  .card:has(> .card-info)::after,
+  .card-info {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Icon tile (company / school logo) */
+.tile {
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-9);
+  padding: var(--space-5) var(--gutter);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-base);
+}
+
+.footer a {
+  text-decoration: none;
+}
+
+/* ---------- 5. Page patterns ---------- */
+
+/* Home: Work teaser fills the viewport */
+.work-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  height: 100vh;
+  height: 100svh;
+  padding-bottom: var(--space-5);
+}
+
+.work-hero .card {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Home: About */
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 610px) minmax(0, 540px);
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--space-7);
+  margin-top: var(--space-8);
+}
+
+.about-layout .card {
+  aspect-ratio: 610 / 545;
+}
+
+.about-layout .lead {
+  text-align: right;
+}
+
+/* Home: Experience / Education */
+/* Title on the left; entries in the right half, starting at the page
+   midline (same column gap as the top bar, so they line up with the bio) */
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-7) var(--space-5);
+  align-items: start;
+  margin-top: var(--space-9);
+}
+
+/* Entries stack one under another, below the section title */
+/* Section title stays in view (just under the sticky nav) while its
+   entries scroll past, then leaves with its section */
+.detail-grid > .heading {
+  position: sticky;
+  top: calc(72px + env(safe-area-inset-top, 0px));
+}
+
+.entries {
+  grid-column: 2;
+  /* Start just below the section title on the left */
+  margin-top: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: 660px;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.entry .tile {
+  margin-bottom: var(--space-1);
+}
+
+.entry-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.entry-role {
+  font-size: var(--text-md);
+}
+
+/* Work page */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  margin: var(--space-8) 0 var(--space-7);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+}
+
+.work-grid .card {
+  aspect-ratio: 393 / 335;
+}
+
+.work-empty {
+  margin: var(--space-7) 0;
+  font-size: var(--text-md);
+  color: var(--color-muted);
+}
+
+/* Project page */
+/* Header sits in the right half, lined up with the top-bar bio */
+.project-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  margin: var(--space-6) 0 var(--space-9);
+}
+
+.project-heading {
+  grid-column: 2;
+}
+
+.project-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-6);
+}
+
+.project-title {
+  margin: 0;
+  font-size: clamp(40px, 4.6vw, 72px);
+  font-weight: var(--weight-regular);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.project-description {
+  max-width: 660px;
+  margin-top: var(--space-7);
+}
+
+.project-description p {
+  margin: 0 0 1em;
+  font-size: var(--text-md);
+  line-height: 1.5;
+}
+
+.project-description p:last-child {
+  margin-bottom: 0;
+}
+
+.meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.meta-date {
+  margin: 0;
+  font-size: var(--text-md);
+}
+
+.project-intro {
+  max-width: 780px;
+  margin: 0 0 var(--space-7);
+  font-size: var(--text-md);
+  line-height: 1.3;
+}
+
+/* Cover: capped so square covers don't fill the whole screen */
+.project-hero {
+  display: block;
+  background: var(--tone-1);
+  width: 100%;
+  height: auto;
+  max-height: 80svh;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+
+/* Cover sits in the left column of the header row. Its height is
+   locked to the text block beside it (title top to last paragraph):
+   height: 0 keeps the image from stretching the row, min-height: 100%
+   then fills the row the text created. Width follows the image's own
+   aspect ratio, so nothing is cropped. */
+.project-header .project-hero {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  width: auto;
+  max-width: 100%;
+  height: 0;
+  min-height: 100%;
+  max-height: none;
+}
+
+.project-header .project-heading {
+  grid-row: 1;
+}
+
+.project-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Justified row: each item's width is proportional to its aspect ratio
+   (--ar, set inline), so every item in a row ends up the same height
+   with no cropping. */
+.media-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.media-row > * {
+  flex: var(--ar, 1) 1 0%;
+  min-width: 0;
+  aspect-ratio: var(--ar, 1);
+}
+
+/* Checkerboard of tones across the gallery */
+.media-row:nth-child(odd) > :nth-child(odd),
+.media-row:nth-child(even) > :nth-child(even) {
+  --tone: var(--tone-2);
+}
+
+.media-row:nth-child(odd) > :nth-child(even),
+.media-row:nth-child(even) > :nth-child(odd) {
+  --tone: var(--tone-1);
+}
+
+/* Rows of lone portrait items (flowcharts, phone videos) */
+.media-row--narrow {
+  max-width: 760px;
+}
+
+.media-link {
+  display: block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.project-media {
+  display: block;
+  background: var(--tone, var(--tone-2));
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.media-link .project-media {
+  transition: transform 0.3s ease;
+}
+
+.media-link:hover .project-media,
+.media-link:focus-visible .project-media {
+  transform: scale(1.02);
+}
+
+.lightbox-trigger {
+  cursor: zoom-in;
+}
+
+.media-video {
+  position: relative;
+}
+
+.media-expand {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+}
+
+/* Media viewer (lightbox.js) */
+.lightbox-open {
+  overflow: hidden;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  overflow: hidden;
+  background: #0c0c10;
+  color: var(--color-on-ink);
+}
+
+.lightbox::backdrop {
+  background: transparent;
+}
+
+.lightbox-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 88px 112px;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.lightbox-stage img,
+.lightbox-stage video {
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+}
+
+.lightbox .icon-button {
+  position: absolute;
+  color: var(--color-ink);
+}
+
+.lightbox-close {
+  top: calc(var(--space-5) + env(safe-area-inset-top, 0px));
+  right: var(--gutter);
+  font-size: 22px;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-prev {
+  left: var(--gutter);
+}
+
+.lightbox-next {
+  right: var(--gutter);
+}
+
+.lightbox-count {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: var(--text-base);
+}
+
+.project-nav {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: var(--space-8);
+}
+
+/* Contact page: two large link rows */
+.contact-links {
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.contact-links li {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Same two columns as the top bar, so the values line up with the bio */
+.contact-link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-6) 0;
+  text-decoration: none;
+}
+
+
+.contact-label {
+  font-size: var(--text-md);
+  color: var(--color-muted);
+}
+
+.contact-value {
+  font-size: var(--text-heading);
+  overflow-wrap: anywhere;
+}
+
+.contact-link:hover .contact-value,
+.contact-link:focus-visible .contact-value {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
+}
+
+/* ---------- 6. Responsive ---------- */
+@media (max-width: 900px) {
+  .work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .about-layout,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-layout .lead {
+    text-align: left;
+  }
+
+  /* Stacked layout: title sits above its entries, no sticking */
+  .detail-grid > .heading {
+    position: static;
+  }
+
+  .entries {
+    grid-column: 1;
+    margin-top: 0;
+    gap: var(--space-7);
+  }
+
+  /* Header columns stack: bio under name, project heading full width */
+  .topbar,
+  .project-header {
+    grid-template-columns: 1fr;
+  }
+
+  .project-heading,
+  .project-header .project-heading {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  /* Phones: title and text first, cover underneath */
+  .project-header .project-hero {
+    grid-row: 2;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin-top: var(--space-5);
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-link {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .topbar {
+    padding-bottom: var(--space-5);
+  }
+
+  .topbar-copy {
+    font-size: 15px;
+  }
+
+  .site-nav ul {
+    gap: var(--space-2) var(--space-5);
+  }
+
+  .site-nav a {
+    font-size: var(--text-md);
+  }
+
+  .meta-tags {
+    gap: var(--space-3);
+  }
+
+  .icon-button {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+  }
+
+  .filters {
+    gap: var(--space-3);
+    margin: var(--space-6) 0;
+    padding-left: 0;
+  }
+
+  /* Phones: rows of 3+ wrap into two columns */
+  .media-row {
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .media-row > * {
+    flex: 1 1 calc(50% - var(--space-3));
+  }
+
+  .project-gallery {
+    gap: var(--space-3);
+  }
+
+  /* Viewer on phones: media fills the width, arrows sit at the bottom */
+  .lightbox-stage {
+    padding: 80px var(--space-3) 110px;
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    top: auto;
+    bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+    transform: none;
+  }
+
+  .lightbox-count {
+    bottom: calc(var(--space-5) + 14px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+}

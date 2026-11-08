@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Work</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="logo" href="index.html">Nat Nina</a>
+      <p class="topbar-copy">
+        Designer and educator with two decades of experience specialized in designing products, digital experiences, and building overpowered teams obsessed with craft.
+      </p>
+    </header>
+
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="work.html" aria-current="page">work</a></li>
+        <li><a href="about.html">about</a></li>
+        <li><a href="#">notes</a></li>
+        <li><a href="contact.html">contact</a></li>
+      </ul>
+    </nav>
+
+    <main class="container">
+      <div class="section-header">
+        <h1 class="display">Work</h1>
+        <a class="icon-button" href="index.html" aria-label="Back to home">→</a>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filter projects">
+        <button class="pill" type="button" aria-pressed="false" data-filter="Graphic Design">Graphic Design</button>
+        <button class="pill" type="button" aria-pressed="false" data-filter="UX/UI Design">UX/UI Design</button>
+        <button class="pill" type="button" aria-pressed="false" data-filter="Branding">Branding</button>
+        <button class="pill" type="button" aria-pressed="false" data-filter="3D Modeling">3D Modeling</button>
+      </div>
+
+      <section class="work-grid">
+        <a class="card" href="project-life-jacket.html" data-tags="3D Modeling|Product Design">
+          <img src="images/life%20jacket/vestrealistic_perspective.jpeg" alt="" loading="lazy" />
+          <div class="card-info">
+            <h2 class="card-title">Life Jacket</h2>
+            <ul class="card-tags"><li class="pill pill--static">3D Modeling</li><li class="pill pill--static">Product Design</li></ul>
+          </div>
+        </a>
+        <a class="card" href="project-cure.html" data-tags="Branding|Graphic Design">
+          <img src="images/CURE/newcover.jpg" alt="" loading="lazy" />
+          <div class="card-info">
+            <h2 class="card-title">CURE</h2>
+            <ul class="card-tags"><li class="pill pill--static">Branding</li><li class="pill pill--static">Graphic Design</li></ul>
+          </div>
+        </a>
+         <a class="card" href="project-owl.html" data-tags="UX/UI Design|Graphic Design">
+          <img src="images/owl/render_iPad%20Mini.png" alt="" loading="lazy" />
+          <div class="card-info">
+            <h2 class="card-title">Owl</h2>
+            <ul class="card-tags"><li class="pill pill--static">UX/UI Design</li><li class="pill pill--static">Graphic Design</li></ul>
+          </div>
+        </a>
+        <a class="card" href="project-estran.html" data-tags="UX/UI Design">
+          <img src="images/ESTRAN/born%20in%20quebec.png" alt="" loading="lazy" />
+          <div class="card-info">
+            <h2 class="card-title">ESTRAN</h2>
+            <ul class="card-tags"><li class="pill pill--static">UX/UI Design</li></ul>
+          </div>
+        </a>
+        <a class="card" href="project-luminous.html" data-tags="Branding|Graphic Design|Photography">
+          <img src="images/Luminous/cover.avif" alt="" loading="lazy" />
+          <div class="card-info">
+            <h2 class="card-title">Luminous Threadz</h2>
+            <ul class="card-tags"><li class="pill pill--static">Branding</li><li class="pill pill--static">Graphic Design</li></ul>
+          </div>
+        </a>
+        <a class="card" href="project-drya.html" data-tags="Branding|Tech Pack|Apparel Design">
+          <img src="images/drya/cover.jpg" alt="" loading="lazy" />
+          <div class="card-info">
+            <h2 class="card-title">Drya</h2>
+            <ul class="card-tags"><li class="pill pill--static">Branding</li><li class="pill pill--static">Tech Pack</li></ul>
+          </div>
+        </a>
+        <a class="card" href="project-stud-finder.html" data-tags="3D Modeling|Industrial Design">
+          <img src="images/stud%20finder/cover.png" alt="" loading="lazy" />
+          <div class="card-info">
+            <h2 class="card-title">Stud Finder</h2>
+            <ul class="card-tags"><li class="pill pill--static">3D Modeling</li><li class="pill pill--static">Industrial Design</li></ul>
+          </div>
+        </a>
+      </section>
+
+      <p class="work-empty" hidden>No projects match these filters.</p>
+    </main>
+
+    <script>
+      // Show only projects tagged with one of the selected filters.
+      // No filter selected = show everything. Selection is kept in the URL
+      // (work.html?filter=Branding) so it survives back/forward and can be linked.
+      const buttons = [...document.querySelectorAll(".filters .pill")];
+      const cards = [...document.querySelectorAll(".work-grid .card")];
+      const empty = document.querySelector(".work-empty");
+
+      function apply(selected) {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", String(selected.includes(b.dataset.filter))));
+        let shown = 0;
+        cards.forEach((card) => {
+          const tags = (card.dataset.tags || "").split("|");
+          const match = !selected.length || selected.some((f) => tags.includes(f));
+          card.hidden = !match;
+          if (match) {
+            card.style.setProperty("--tone", `var(--tone-${(shown % 3) + 1})`);
+            shown++;
+          }
+        });
+        empty.hidden = shown > 0;
+      }
+
+      function selectedFromUrl() {
+        const known = buttons.map((b) => b.dataset.filter);
+        return new URLSearchParams(location.search).getAll("filter").filter((f) => known.includes(f));
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const selected = buttons
+            .filter((b) => (b === btn) !== (b.getAttribute("aria-pressed") === "true"))
+            .map((b) => b.dataset.filter);
+          const params = new URLSearchParams();
+          selected.forEach((f) => params.append("filter", f));
+          const qs = params.toString();
+          history.replaceState(null, "", qs ? "?" + qs : location.pathname);
+          apply(selected);
+        });
+      });
+
+      apply(selectedFromUrl());
+    </script>
+  </body>
+</html>
