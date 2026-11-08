@@ -157,6 +157,11 @@ a {
   text-decoration: none;
 }
 
+/* Language toggle: pushed to the far right of the nav */
+.site-nav .lang-switch {
+  margin-left: auto;
+}
+
 .site-nav a:hover,
 .site-nav a[aria-current="page"] {
   text-decoration: underline;

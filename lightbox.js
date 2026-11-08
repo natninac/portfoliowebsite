@@ -14,15 +14,20 @@
     alt: el.getAttribute("alt") || "",
   }));
 
+  /* Labels follow the page language (<html lang="fr"> on /fr/ pages) */
+  const t = document.documentElement.lang.startsWith("fr")
+    ? { viewer: "Visionneuse des médias du projet", close: "Fermer", prev: "Précédent", next: "Suivant", expand: "Ouvrir la vidéo dans la visionneuse" }
+    : { viewer: "Project media viewer", close: "Close", prev: "Previous", next: "Next", expand: "Open video in viewer" };
+
   /* ---------- Build the modal ---------- */
   const dialog = document.createElement("dialog");
   dialog.className = "lightbox";
-  dialog.setAttribute("aria-label", "Project media viewer");
+  dialog.setAttribute("aria-label", t.viewer);
   dialog.innerHTML = `
     <div class="lightbox-stage"></div>
-    <button class="icon-button lightbox-close" type="button" aria-label="Close">✕</button>
-    <button class="icon-button lightbox-prev" type="button" aria-label="Previous">←</button>
-    <button class="icon-button lightbox-next" type="button" aria-label="Next">→</button>
+    <button class="icon-button lightbox-close" type="button" aria-label="${t.close}">✕</button>
+    <button class="icon-button lightbox-prev" type="button" aria-label="${t.prev}">←</button>
+    <button class="icon-button lightbox-next" type="button" aria-label="${t.next}">→</button>
     <p class="lightbox-count" aria-live="polite"></p>
   `;
   document.body.append(dialog);
@@ -120,7 +125,7 @@
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "icon-button media-expand";
-      btn.setAttribute("aria-label", "Open video in viewer");
+      btn.setAttribute("aria-label", t.expand);
       btn.textContent = "⤢";
       btn.addEventListener("click", () => {
         el.pause();
