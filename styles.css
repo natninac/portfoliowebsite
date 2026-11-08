@@ -473,6 +473,21 @@ a.card:focus-visible .card-info {
   text-align: right;
 }
 
+/* About page: greeting pinned to the image's top edge, paragraph stays at the bottom */
+.about-text {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-5);
+  text-align: right;
+}
+
+.about-text .heading {
+  /* Trim the line-height space above the letters so the text top meets the image top */
+  text-box: trim-start cap alphabetic;
+}
+
 /* Home: Experience / Education */
 /* Title on the left; entries in the right half, starting at the page
    midline (same column gap as the top bar, so they line up with the bio) */
@@ -860,6 +875,10 @@ a.card:focus-visible .card-info {
   }
 
   .about-layout .lead {
+    text-align: left;
+  }
+
+  .about-text {
     text-align: left;
   }
 
