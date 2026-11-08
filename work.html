@@ -8,7 +8,7 @@
   </head>
   <body>
     <header class="topbar">
-      <a class="logo" href="index.html">Nat Nina</a>
+      <a class="logo" href="index">Nat Nina</a>
       <p class="topbar-copy">
         Designer and educator with two decades of experience specialized in designing products, digital experiences, and building overpowered teams obsessed with craft.
       </p>
@@ -16,17 +16,17 @@
 
     <nav class="site-nav" aria-label="Main">
       <ul>
-        <li><a href="work.html" aria-current="page">work</a></li>
-        <li><a href="about.html">about</a></li>
+        <li><a href="work" aria-current="page">work</a></li>
+        <li><a href="about">about</a></li>
         <li><a href="#">notes</a></li>
-        <li><a href="contact.html">contact</a></li>
+        <li><a href="contact">contact</a></li>
       </ul>
     </nav>
 
     <main class="container">
       <div class="section-header">
         <h1 class="display">Work</h1>
-        <a class="icon-button" href="index.html" aria-label="Back to home">→</a>
+        <a class="icon-button" href="index" aria-label="Back to home">→</a>
       </div>
 
       <div class="filters" role="group" aria-label="Filter projects">
@@ -37,49 +37,49 @@
       </div>
 
       <section class="work-grid">
-        <a class="card" href="project-life-jacket.html" data-tags="3D Modeling|Product Design">
+        <a class="card" href="project-life-jacket" data-tags="3D Modeling|Product Design">
           <img src="images/life%20jacket/vestrealistic_perspective.jpeg" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Life Jacket</h2>
             <ul class="card-tags"><li class="pill pill--static">3D Modeling</li><li class="pill pill--static">Product Design</li></ul>
           </div>
         </a>
-        <a class="card" href="project-cure.html" data-tags="Branding|Graphic Design">
+        <a class="card" href="project-cure" data-tags="Branding|Graphic Design">
           <img src="images/CURE/newcover.jpg" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">CURE</h2>
             <ul class="card-tags"><li class="pill pill--static">Branding</li><li class="pill pill--static">Graphic Design</li></ul>
           </div>
         </a>
-         <a class="card" href="project-owl.html" data-tags="UX/UI Design|Graphic Design">
+         <a class="card" href="project-owl" data-tags="UX/UI Design|Graphic Design">
           <img src="images/owl/render_iPad%20Mini.png" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Owl</h2>
             <ul class="card-tags"><li class="pill pill--static">UX/UI Design</li><li class="pill pill--static">Graphic Design</li></ul>
           </div>
         </a>
-        <a class="card" href="project-estran.html" data-tags="UX/UI Design">
+        <a class="card" href="project-estran" data-tags="UX/UI Design">
           <img src="images/ESTRAN/born%20in%20quebec.png" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">ESTRAN</h2>
             <ul class="card-tags"><li class="pill pill--static">UX/UI Design</li></ul>
           </div>
         </a>
-        <a class="card" href="project-luminous.html" data-tags="Branding|Graphic Design|Photography">
+        <a class="card" href="project-luminous" data-tags="Branding|Graphic Design|Photography">
           <img src="images/Luminous/cover.avif" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Luminous Threadz</h2>
             <ul class="card-tags"><li class="pill pill--static">Branding</li><li class="pill pill--static">Graphic Design</li></ul>
           </div>
         </a>
-        <a class="card" href="project-drya.html" data-tags="Branding|Tech Pack|Apparel Design">
+        <a class="card" href="project-drya" data-tags="Branding|Tech Pack|Apparel Design">
           <img src="images/drya/cover.jpg" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Drya</h2>
             <ul class="card-tags"><li class="pill pill--static">Branding</li><li class="pill pill--static">Tech Pack</li></ul>
           </div>
         </a>
-        <a class="card" href="project-stud-finder.html" data-tags="3D Modeling|Industrial Design">
+        <a class="card" href="project-stud-finder" data-tags="3D Modeling|Industrial Design">
           <img src="images/stud%20finder/cover.png" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Stud Finder</h2>
@@ -94,7 +94,7 @@
     <script>
       // Show only projects tagged with one of the selected filters.
       // No filter selected = show everything. Selection is kept in the URL
-      // (work.html?filter=Branding) so it survives back/forward and can be linked.
+      // (work?filter=Branding) so it survives back/forward and can be linked.
       const buttons = [...document.querySelectorAll(".filters .pill")];
       const cards = [...document.querySelectorAll(".work-grid .card")];
       const empty = document.querySelector(".work-empty");
