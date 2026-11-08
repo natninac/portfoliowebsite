@@ -983,3 +983,12 @@ a.card:focus-visible .card-info {
     grid-template-columns: 1fr;
   }
 }
+
+/* Notes: placeholder until posts exist */
+.notes-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 660px;
+  margin-top: var(--space-8);
+}
