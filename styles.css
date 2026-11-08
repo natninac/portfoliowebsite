@@ -455,32 +455,30 @@ a.card:focus-visible .card-info {
   min-height: 0;
 }
 
-/* Home: About */
+/* Home + About page: image on the left; text in the right half, starting at
+   the page midline (same columns and gap as the top bar, so it lines up with the bio) */
 .about-layout {
   display: grid;
-  grid-template-columns: minmax(0, 610px) minmax(0, 540px);
-  justify-content: space-between;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: end;
-  gap: var(--space-7);
+  gap: var(--space-5);
   margin-top: var(--space-8);
 }
 
 .about-layout .card {
+  width: 100%;
+  max-width: 610px;
   aspect-ratio: 610 / 545;
 }
 
-.about-layout .lead {
-  text-align: right;
-}
-
-/* About page: greeting pinned to the image's top edge, paragraph stays at the bottom */
+/* Greeting pinned to the image's top edge, paragraph stays at the bottom */
 .about-text {
   align-self: stretch;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: var(--space-5);
-  text-align: right;
+  max-width: 660px;
 }
 
 .about-text .heading {
@@ -872,14 +870,6 @@ a.card:focus-visible .card-info {
   .about-layout,
   .detail-grid {
     grid-template-columns: 1fr;
-  }
-
-  .about-layout .lead {
-    text-align: left;
-  }
-
-  .about-text {
-    text-align: left;
   }
 
   /* Stacked layout: title sits above its entries, no sticking */
