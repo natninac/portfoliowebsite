@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Je m’appelle Nat et je veux créer des mondes qui nous aident à mieux vivre. Je me spécialise en design UX/UI et en image de marque. Créons ensemble!" />
     <title>Projets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
     <link rel="alternate" hreflang="en" href="https://natnina.ca/work" />
     <link rel="alternate" hreflang="fr" href="https://natnina.ca/fr/work" />
@@ -33,7 +36,6 @@
       </div>
 
       <div class="filters" role="group" aria-label="Filtrer les projets">
-        <button class="pill" type="button" aria-pressed="false" data-filter="Graphic Design">Design graphique</button>
         <button class="pill" type="button" aria-pressed="false" data-filter="UX/UI Design">Design UX/UI</button>
         <button class="pill" type="button" aria-pressed="false" data-filter="Branding">Image de marque</button>
         <button class="pill" type="button" aria-pressed="false" data-filter="3D Modeling">Modélisation 3D</button>
@@ -41,56 +43,56 @@
 
       <section class="work-grid">
         <a class="card" href="project-game-design" data-tags="UX/UI Design|Game Design">
-          <img src="/images/Game%20Education%20Software/cover.png" alt="" loading="lazy" />
+          <img src="/images/Game%20Education%20Software/cover-web.webp" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Logiciel éducatif de design de jeux</h2>
             <ul class="card-tags"><li class="pill pill--static">Design UX/UI</li><li class="pill pill--static">Design de jeux</li></ul>
           </div>
         </a>
         <a class="card" href="project-life-jacket" data-tags="3D Modeling|Product Design">
-          <img src="/images/life%20jacket/vestrealistic_perspective.jpeg" alt="" loading="lazy" />
+          <img src="/images/life%20jacket/cover-web.webp" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Gilet de sauvetage</h2>
             <ul class="card-tags"><li class="pill pill--static">Modélisation 3D</li><li class="pill pill--static">Design de produit</li></ul>
           </div>
         </a>
         <a class="card" href="project-cure" data-tags="Branding|Graphic Design">
-          <img src="/images/CURE/newcover.jpg" alt="" loading="lazy" />
+          <img src="/images/CURE/cover-web.webp" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">CURE</h2>
             <ul class="card-tags"><li class="pill pill--static">Image de marque</li><li class="pill pill--static">Design graphique</li></ul>
           </div>
         </a>
-         <a class="card" href="project-owl" data-tags="UX/UI Design|Graphic Design">
+         <a class="card" href="project-owl" data-tags="UX/UI Design">
           <img src="/images/owl/render_iPad%20Mini.png" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Owl</h2>
-            <ul class="card-tags"><li class="pill pill--static">Design UX/UI</li><li class="pill pill--static">Design graphique</li></ul>
+            <ul class="card-tags"><li class="pill pill--static">Design UX/UI</li></ul>
           </div>
         </a>
         <a class="card" href="project-estran" data-tags="UX/UI Design">
-          <img src="/images/ESTRAN/born%20in%20quebec.png" alt="" loading="lazy" />
+          <img src="/images/ESTRAN/cover-web.webp" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">ESTRAN</h2>
             <ul class="card-tags"><li class="pill pill--static">Design UX/UI</li></ul>
           </div>
         </a>
         <a class="card" href="project-luminous" data-tags="Branding|Graphic Design|Photography">
-          <img src="/images/Luminous/cover.avif" alt="" loading="lazy" />
+          <img src="/images/Luminous/cover-web.webp" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Luminous Threadz</h2>
             <ul class="card-tags"><li class="pill pill--static">Image de marque</li><li class="pill pill--static">Design graphique</li></ul>
           </div>
         </a>
         <a class="card" href="project-drya" data-tags="Branding|Tech Pack|Apparel Design">
-          <img src="/images/drya/cover.jpg" alt="" loading="lazy" />
+          <img src="/images/drya/cover-web.webp" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Drya</h2>
             <ul class="card-tags"><li class="pill pill--static">Image de marque</li><li class="pill pill--static">Fiche technique</li></ul>
           </div>
         </a>
         <a class="card" href="project-stud-finder" data-tags="3D Modeling|Industrial Design">
-          <img src="/images/stud%20finder/cover.png" alt="" loading="lazy" />
+          <img src="/images/stud%20finder/cover-web.webp" alt="" loading="lazy" />
           <div class="card-info">
             <h2 class="card-title">Détecteur de montants</h2>
             <ul class="card-tags"><li class="pill pill--static">Modélisation 3D</li><li class="pill pill--static">Design industriel</li></ul>
@@ -116,10 +118,7 @@
           const tags = (card.dataset.tags || "").split("|");
           const match = !selected.length || selected.some((f) => tags.includes(f));
           card.hidden = !match;
-          if (match) {
-            card.style.setProperty("--tone", `var(--tone-${(shown % 3) + 1})`);
-            shown++;
-          }
+          if (match) shown++;
         });
         empty.hidden = shown > 0;
       }

@@ -7,20 +7,38 @@
 /* ---------- 1. Tokens ---------- */
 :root {
   /* Color */
-  --color-bg: #ffffff;
-  --color-surface: #e3e6f2;      /* nav bar, buttons, pills, tags, icon tiles */
-  --color-placeholder: #acb2c0;  /* image / media placeholders */
-  /* Alternating fills shown behind transparent images */
-  --tone-1: #e3e6f2;
-  --tone-2: #c8cde0;
-  --tone-3: #acb2c0;
-  --color-ink: #111111;          /* primary text */
-  --color-muted: #9a9ca8;        /* secondary / body copy */
-  --color-border: rgba(17, 17, 17, 0.08);
-  --color-on-ink: #ffffff;       /* text on an ink background (active states) */
+  /* Palette */
+  --cream: #fffbf0;
+  --charcoal: #2e2c2f;
+  --pink: #d4428e;
+  --blue: #02419a;
+  --yellow: #f1d826;
+  --orange: #f3581d;
+
+  /* Roles. Pink and orange are too low-contrast for small text:
+     use them only for large text and decorative fills. */
+  --color-bg: var(--cream);
+  --color-ink: var(--charcoal);    /* primary text */
+  --color-muted: #525252;          /* secondary / body copy (7.6:1 on cream) */
+  --color-on-ink: var(--cream);    /* text on charcoal or blue */
+  --color-surface: #FFFBF7;        /* pills, tags, icon buttons, logo tiles */
+  --color-active: var(--blue);     /* selected filters, link buttons, footer */
+  --color-highlight: var(--pink);  /* standout large text */
+  --color-accent: var(--orange);   /* underlines and small details */
+  --color-placeholder: #f5d0a3;    /* empty image placeholders */
+  --color-border: rgba(46, 44, 47, 0.1);
+  /* Fills shown behind transparent or loading images */
+  /* Last two hex digits = opacity (99 = 60%) */
+  --tone-1: #f5d0a399;
+  --tone-2: #f5d0a399;
+  --tone-3: #f5d0a399;
+  --tone-4: #f5d0a399;
+  /* Previous try: #eceade99, #ecdede99, #dfdeec99, #ece7de99 */
+ 
 
   /* Typography */
-  --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-sans: "Urbanist", system-ui, -apple-system, sans-serif;        /* body text */
+  --font-display: "Shippori Mincho", "Times New Roman", serif;            /* name, titles, headings */
   --text-xs: 13px;                          /* tags */
   --text-sm: 16px;
   --text-base: 18px;                        /* nav copy */
@@ -120,6 +138,7 @@ a {
 }
 
 .logo {
+  font-family: var(--font-display);
   font-size: 30px;
   line-height: 1.2;
   text-decoration: none;
@@ -165,12 +184,20 @@ a {
 .site-nav a:hover,
 .site-nav a[aria-current="page"] {
   text-decoration: underline;
+  text-decoration-color: var(--nav-color, var(--color-accent));
   text-underline-offset: 6px;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: 2px;
 }
+
+/* Each nav item has its own underline color: work, about, notes, contact */
+.site-nav li:nth-child(1) { --nav-color: var(--pink); }
+.site-nav li:nth-child(2) { --nav-color: var(--blue); }
+.site-nav li:nth-child(3) { --nav-color: var(--yellow); }
+.site-nav li:nth-child(4) { --nav-color: var(--orange); }
 
 /* Type */
 .display {
+  font-family: var(--font-display);
   margin: 0;
   font-size: var(--text-display);
   font-weight: var(--weight-regular);
@@ -179,11 +206,17 @@ a {
 }
 
 .heading {
+  font-family: var(--font-display);
   margin: 0;
   font-size: var(--text-heading);
   font-weight: var(--weight-regular);
   line-height: 1.2;
   letter-spacing: -0.01em;
+}
+
+/* Sub-headings (job/school names) use the body font */
+h3.heading {
+  font-family: var(--font-sans);
 }
 
 .lead {
@@ -228,15 +261,32 @@ a {
   cursor: pointer;
 }
 
+/* Filter pills lift on hover, like the cards */
+.filters .pill {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.filters .pill:hover,
+.filters .pill:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2);
+}
+
 .pill[aria-pressed="true"] {
-  background: var(--color-ink);
+  background: var(--color-active);
   color: var(--color-on-ink);
 }
+
+/* Each filter has its own color when selected, in button order */
+.filters .pill:nth-child(1)[aria-pressed="true"] { background: var(--pink);   color: var(--cream); }
+.filters .pill:nth-child(2)[aria-pressed="true"] { background: var(--blue);   color: var(--cream); }
+.filters .pill:nth-child(3)[aria-pressed="true"] { background: var(--yellow); color: var(--charcoal); }
+.filters .pill:nth-child(4)[aria-pressed="true"] { background: var(--orange); color: var(--charcoal); }
 
 /* Pill-shaped link (e.g. external links on a project page) */
 .pill--link {
   display: inline-block;
-  background: var(--color-ink);
+  background: var(--color-active);
   color: var(--color-on-ink);
   text-decoration: none;
 }
@@ -257,10 +307,30 @@ a {
 }
 
 /* Media placeholder / project card */
+/* Tile look: soft drop shadow, inner edge glow, and a cream circle glow
+   in the middle (visible on empty cards and through transparent PNGs) */
 .card {
+  --card-glow: radial-gradient(circle at 50% 45%, rgba(255, 251, 240, 0.95) 0%, rgba(255, 251, 240, 0) 65%);
+  --card-shadow: -6px 10px 22px rgba(70, 50, 25, 0.28);
+  position: relative;
   display: block;
-  background: var(--color-placeholder);
+  background: var(--card-glow), var(--color-placeholder);
   border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+}
+
+/* Inner glow sits above the image so it shows on every card */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 18px 4px rgba(255, 251, 240, 0.5),  /* soft light rim */
+    inset 0 2px 3px rgba(255, 255, 255, 0.7),     /* top highlight */
+    inset 0 -6px 10px rgba(140, 100, 50, 0.18);   /* darker bottom edge */
 }
 
 a.card {
@@ -277,26 +347,20 @@ a.card {
 a.card:hover,
 a.card:focus-visible {
   transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: -8px 16px 28px rgba(70, 50, 25, 0.32);
 }
 
-/* Cards showing a real image: no gray fill and no box shadow, so
-   transparent PNGs keep their transparency */
-/* Cards with an image: fill with an alternating palette tone, visible
-   only through transparent PNGs. The Work page filter script re-sets
-   --tone on visible cards so the pattern stays even after filtering. */
+/* Cards with an image: fill with a tone (plus the circle glow), visible
+   only through transparent PNGs. The Work cards with transparent covers
+   each get their own tone (matched by link, so it works in French too). */
 .card:has(> img) {
-  background: var(--tone, var(--tone-1));
+  background: var(--card-glow), var(--tone, var(--tone-1));
 }
 
-.work-grid .card:nth-child(3n + 1) { --tone: var(--tone-1); }
-.work-grid .card:nth-child(3n + 2) { --tone: var(--tone-2); }
-.work-grid .card:nth-child(3n + 3) { --tone: var(--tone-3); }
-
-a.card:has(> img):hover,
-a.card:has(> img):focus-visible {
-  box-shadow: none;
-}
+.work-grid .card[href="project-game-design"] { --tone: var(--tone-1); }
+.work-grid .card[href="project-owl"]         { --tone: var(--tone-2); }
+.work-grid .card[href="project-estran"]      { --tone: var(--tone-3); }
+.work-grid .card[href="project-stud-finder"] { --tone: var(--tone-4); }
 
 /* Card overlay: white title + glowing pills over a dark gradient.
    Work page cards show it on hover; the featured home card always does. */
@@ -343,6 +407,7 @@ a.card:focus-visible .card-info {
 }
 
 .card-title {
+  font-family: var(--font-display);
   margin: 0;
   font-size: clamp(24px, 2.2vw, 34px);
   font-weight: var(--weight-regular);
@@ -442,8 +507,8 @@ a.card:focus-visible .card-info {
   gap: var(--space-2);
   margin-top: var(--space-9);
   padding: var(--space-5) var(--gutter);
-  background: var(--color-surface);
-  border-top: 1px solid var(--color-border);
+  background: var(--color-active);
+  color: var(--color-on-ink);
   font-size: var(--text-base);
 }
 
@@ -495,6 +560,8 @@ a.card:focus-visible .card-info {
 }
 
 .about-text .heading {
+  font-family: var(--font-sans);
+  color: var(--color-highlight);
   /* Trim the line-height space above the letters so the text top meets the image top */
   text-box: trim-start cap alphabetic;
 }
@@ -567,6 +634,12 @@ a.card:focus-visible .card-info {
   aspect-ratio: 393 / 335;
 }
 
+/* Round Luminous logo: show it whole, inset from the card edges */
+.work-grid .card[href="project-luminous"] > img {
+  object-fit: contain;
+  padding: 8%;
+}
+
 .work-empty {
   margin: var(--space-7) 0;
   font-size: var(--text-md);
@@ -594,6 +667,7 @@ a.card:focus-visible .card-info {
 }
 
 .project-title {
+  font-family: var(--font-display);
   margin: 0;
   font-size: clamp(40px, 4.6vw, 72px);
   font-weight: var(--weight-regular);
@@ -819,6 +893,38 @@ a.card:focus-visible .card-info {
 
 .lightbox-next {
   right: var(--gutter);
+}
+
+/* Round arrow / close buttons light up in a palette color on hover.
+   Kept after the lightbox rules so it overrides their text color.
+   Cream text on pink/blue, charcoal on yellow/orange, for contrast. */
+.icon-button {
+  --hover-bg: var(--pink);
+  --hover-fg: var(--cream);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+  background: var(--hover-bg);
+  color: var(--hover-fg);
+}
+
+.section-header .icon-button[href="about"],
+.lightbox-prev {
+  --hover-bg: var(--blue);
+  --hover-fg: var(--cream);
+}
+
+.project-nav .icon-button,
+.lightbox-next {
+  --hover-bg: var(--yellow);
+  --hover-fg: var(--charcoal);
+}
+
+.media-expand {
+  --hover-bg: var(--orange);
+  --hover-fg: var(--charcoal);
 }
 
 .lightbox-count {
