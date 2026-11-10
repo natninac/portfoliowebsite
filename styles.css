@@ -22,7 +22,7 @@
   --color-muted: #525252;          /* secondary / body copy (7.6:1 on cream) */
   --color-on-ink: var(--cream);    /* text on charcoal or blue */
   --color-surface: #FFFBF7;        /* pills, tags, icon buttons, logo tiles */
-  --color-active: var(--blue);     /* selected filters, link buttons, footer */
+  --color-active: var(--blue);     /* selected filters, link buttons */
   --color-highlight: var(--pink);  /* standout large text */
   --color-accent: var(--orange);   /* underlines and small details */
   --color-placeholder: #f5d0a3;    /* empty image placeholders */
@@ -138,6 +138,8 @@ a {
 }
 
 .logo {
+  grid-area: 1 / 1;
+  justify-self: start;
   font-family: var(--font-display);
   font-size: 30px;
   line-height: 1.2;
@@ -407,7 +409,7 @@ a.card:focus-visible .card-info {
 }
 
 .card-title {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   margin: 0;
   font-size: clamp(24px, 2.2vw, 34px);
   font-weight: var(--weight-regular);
@@ -507,8 +509,9 @@ a.card:focus-visible .card-info {
   gap: var(--space-2);
   margin-top: var(--space-9);
   padding: var(--space-5) var(--gutter);
-  background: var(--color-active);
-  color: var(--color-on-ink);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  border-top: 1px solid var(--color-border);   /* same divider as under the top bar */
   font-size: var(--text-base);
 }
 
@@ -544,9 +547,26 @@ a.card:focus-visible .card-info {
 }
 
 .about-layout .card {
+  overflow: hidden;
   width: 100%;
   max-width: 610px;
   aspect-ratio: 610 / 545;
+}
+
+/* Portrait: a widened photo (sweater extended past the original edges) that
+   covers the card by height and is scaled up from the bottom edge, so the
+   shoulders always run off the card and no photo edge shows. The card's
+   background matches the photo's cream. */
+.about-layout .card:has(> img) {
+  background: var(--color-bg);
+}
+
+.about-layout .card > img {
+  object-position: 50% 100%;
+  /* about-photo.js sets --head-scale so the top of the head lines up with
+     the paragraph's first line (never below 1); 1.25 is the fallback */
+  transform: scale(var(--head-scale, 1.25));
+  transform-origin: 50% 100%;
 }
 
 /* Greeting pinned to the image's top edge, paragraph stays at the bottom */
@@ -561,7 +581,7 @@ a.card:focus-visible .card-info {
 
 .about-text .heading {
   font-family: var(--font-sans);
-  color: var(--color-highlight);
+  color: var(--color-ink);
   /* Trim the line-height space above the letters so the text top meets the image top */
   text-box: trim-start cap alphabetic;
 }
@@ -690,6 +710,39 @@ a.card:focus-visible .card-info {
   margin-bottom: 0;
 }
 
+/* Gallery paragraphs: serif subtitle on the left, text in the right half
+   (same columns and gap as the top bar, so it lines up with the bio) */
+.project-text {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+  margin: var(--space-7) 0;
+}
+
+.project-subtitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-heading);
+  font-weight: var(--weight-regular);
+  line-height: 1.2;
+}
+
+/* Trim the space above the letters so the subtitle and the first line of
+   text share the same top edge */
+.project-subtitle,
+.project-text p:first-of-type {
+  text-box: trim-start cap alphabetic;
+}
+
+.project-text p {
+  grid-column: 2;
+  max-width: 660px;
+  margin: 0;
+  font-size: var(--text-md);
+  line-height: 1.5;
+}
+
 .project-link {
   margin-top: var(--space-6);
 }
@@ -781,6 +834,13 @@ a.card:focus-visible .card-info {
 /* Rows of lone portrait items (flowcharts, phone videos) */
 .media-row--narrow {
   max-width: 760px;
+}
+
+/* Row in the right half, lined up with the paragraph text above it
+   (same start line and max width as .project-text p) */
+.media-row--end {
+  margin-left: calc(50% + var(--space-5) / 2);
+  max-width: 660px;
 }
 
 .media-link {
@@ -947,11 +1007,6 @@ a.card:focus-visible .card-info {
   margin: var(--space-8) 0 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--color-border);
-}
-
-.contact-links li {
-  border-bottom: 1px solid var(--color-border);
 }
 
 /* Same two columns as the top bar, so the values line up with the bio */
@@ -965,12 +1020,9 @@ a.card:focus-visible .card-info {
 }
 
 
-.contact-label {
-  font-size: var(--text-md);
-  color: var(--color-muted);
-}
-
+/* Values sit in the right column, lined up with the top bar bio */
 .contact-value {
+  grid-column: 2;
   font-size: var(--text-heading);
   overflow-wrap: anywhere;
 }
@@ -991,8 +1043,17 @@ a.card:focus-visible .card-info {
 
 @media (max-width: 760px) {
   .about-layout,
-  .detail-grid {
+  .detail-grid,
+  .project-text {
     grid-template-columns: 1fr;
+  }
+
+  .project-text p {
+    grid-column: 1;
+  }
+
+  .media-row--end {
+    margin-left: 0;
   }
 
   /* Stacked layout: title sits above its entries, no sticking */
@@ -1034,6 +1095,10 @@ a.card:focus-visible .card-info {
     gap: var(--space-2);
   }
 
+  .contact-value {
+    grid-column: 1;
+  }
+
 
   .footer {
     flex-direction: column;
@@ -1047,6 +1112,7 @@ a.card:focus-visible .card-info {
   .topbar-copy {
     font-size: 15px;
   }
+
 
   .site-nav ul {
     gap: var(--space-2) var(--space-5);
