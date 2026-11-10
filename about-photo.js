@@ -14,7 +14,9 @@
   function fit(layout) {
     const card = layout.querySelector(".card");
     const img = card && card.querySelector("img");
-    const para = layout.querySelector(".lead");
+    // French pages carry a hidden copy of the English paragraph (.lead-sizer)
+    // so the photo is the same size in both languages
+    const para = layout.querySelector(".lead-sizer") || layout.querySelector(".lead");
     if (!img || !para) return;
 
     const c = card.getBoundingClientRect();

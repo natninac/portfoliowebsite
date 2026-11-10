@@ -577,6 +577,17 @@ a.card:focus-visible .card-info {
   justify-content: space-between;
   gap: var(--space-5);
   max-width: 660px;
+  position: relative;
+}
+
+/* French pages: invisible copy of the English paragraph, so about-photo.js
+   sizes the portrait the same as on the English page */
+.about-text .lead-sizer {
+  position: absolute;
+  inset: auto 0 0 0;
+  margin: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .about-text .heading {
