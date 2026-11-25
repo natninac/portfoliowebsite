@@ -1192,3 +1192,353 @@ a.card:focus-visible .card-info {
   max-width: 660px;
   margin-top: var(--space-8);
 }
+
+/* Behaviour interview page (behaviour.html) */
+/* Opening statement under the page title */
+.statement {
+  max-width: 1100px;
+  margin: var(--space-8) 0 0;
+  font-size: clamp(28px, 3.4vw, 52px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* Two columns, same split as the top bar, so the right one lines up with the bio */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-7) var(--space-5);
+  margin-top: var(--space-8);
+}
+
+/* Column titles in the serif, like other section titles */
+.split .heading {
+  font-family: var(--font-display);
+}
+
+.split > div {
+  max-width: 660px;
+}
+
+/* Header above a .split, e.g. the skills columns on the Behaviour page */
+.skills-title {
+  margin-top: var(--space-8);
+}
+
+.skills-title + .split {
+  margin-top: var(--space-7);
+}
+
+/* High-five (Behaviour page): Object and Digital are two characters.
+   Each (^‿^) face sits on its card's inner side edge, halfway down, and
+   人 sits between them on that same line, so the middle of the pair reads
+   as one emoticon: (^‿^)人(^‿^). The cards are the bodies. */
+.split--meet {
+  --face-size: var(--text-heading);
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0;
+}
+
+.split--meet > .buddy {
+  position: relative;
+  max-width: none; /* beats .split > div */
+  padding: var(--space-7) var(--space-6) var(--space-5);
+  text-align: center;
+}
+
+/* Face straddles the inner side border; the background hides the line
+   behind it */
+.buddy-face {
+  position: absolute;
+  top: 50%;
+  padding: var(--space-2);
+  background: var(--color-bg);
+  font-size: var(--face-size);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.buddy--left .buddy-face {
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.buddy--right .buddy-face {
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+/* No divider lines inside the cards */
+.buddy .rule-list,
+.buddy .rule-list li {
+  border: 0;
+}
+
+.buddy .rule-list li {
+  padding: var(--space-3) 0;
+}
+
+/* Hands: halfway down, between the two faces. The side padding leaves room
+   for the half of each face that pokes out of its card. */
+.split-meet {
+  align-self: center;
+  padding: 0 calc(1.4em + var(--space-2));
+  font-size: var(--face-size);
+  line-height: 1;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* On hover the hands pop */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .split--meet:hover .split-meet {
+    transform: scale(1.25);
+  }
+}
+
+/* Stacked: faces sit centered on each card's top edge, hands between */
+@media (max-width: 760px) {
+  .split--meet {
+    grid-template-columns: 1fr;
+  }
+
+  .buddy--left .buddy-face,
+  .buddy--right .buddy-face {
+    top: 0;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+  }
+
+  .split-meet {
+    justify-self: center;
+    padding: var(--space-7) 0;
+  }
+}
+
+/* Behaviour page colors: black and deep red only. Text is a pale red-white,
+   since red on black is too dark to read. Role tokens are overridden
+   directly because the :root ones are already resolved. */
+.theme-behaviour {
+  --bh-black: #0d0808;
+  --bh-red: #3b0707;
+  --bh-text: #ecdcdc;
+
+  --cream: var(--bh-text);
+  --charcoal: var(--bh-text);
+  --pink: var(--bh-red);
+  --blue: var(--bh-red);
+  --yellow: var(--bh-red);
+  --orange: var(--bh-red);
+
+  --color-bg: var(--bh-black);
+  --color-ink: var(--bh-text);
+  --color-muted: #c4adad;
+  --color-on-ink: var(--bh-black);
+  --color-surface: var(--bh-red);
+  --color-active: var(--bh-red);
+  --color-highlight: var(--bh-text);
+  --color-accent: var(--bh-red);
+  --color-placeholder: var(--bh-red);
+  --color-border: rgba(236, 220, 220, 0.15);
+  --tone-1: var(--bh-red);
+  --tone-2: var(--bh-red);
+  --tone-3: var(--bh-red);
+  --tone-4: var(--bh-red);
+
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+/* Cards: drop the cream glow and warm shadows, which glare on black */
+.theme-behaviour .card {
+  --card-glow: linear-gradient(transparent, transparent);
+  --card-shadow: none;
+}
+
+.theme-behaviour .card::before {
+  box-shadow: none;
+}
+
+/* Titles sit on the dark hover overlay, so they stay white */
+.theme-behaviour .card-title {
+  color: #fff;
+}
+
+.theme-behaviour a.card:hover,
+.theme-behaviour a.card:focus-visible {
+  box-shadow: none;
+}
+
+/* Story layout (Behaviour page): each top-level section fills one screen
+   (below the sticky nav) with its content centered, so only one section
+   is in view at a time. Taller sections just grow. */
+.story {
+  --nav-h: calc(72px + env(safe-area-inset-top, 0px));
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.story > section {
+  min-height: calc(100svh - var(--nav-h));
+  margin: 0;
+  padding: var(--space-7) 0;
+  box-sizing: border-box;
+  align-content: center;
+  scroll-margin-top: var(--nav-h);
+  scroll-snap-align: start;
+}
+
+/* Plain sections become a one-column grid so align-content can center them */
+.story > .section:not(.project-text) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.story > .section + .section {
+  margin-top: 0;
+}
+
+.story .statement {
+  margin-top: var(--space-8);
+}
+
+.story .skills-title {
+  margin-top: 0;
+}
+
+/* Gently settle on a section when scrolling stops nearby */
+html:has(.story) {
+  scroll-snap-type: y proximity;
+}
+
+.story + .footer {
+  margin-top: 0;
+}
+
+/* List with a thin rule under the title and under each item */
+.rule-list {
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-ink);
+}
+
+.rule-list li {
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--color-ink);
+  font-size: var(--text-md);
+}
+
+.split-title {
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-ink);
+}
+
+.split-text {
+  margin: var(--space-5) 0 0;
+  font-size: var(--text-md);
+  line-height: 1.5;
+}
+
+/* Quote sits in the right half, like .project-text paragraphs */
+.project-text > figure {
+  grid-column: 2;
+  max-width: 660px;
+  margin: 0;
+}
+
+.referral blockquote {
+  margin: 0;
+}
+
+.referral blockquote p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-heading);
+  line-height: 1.3;
+  color: var(--color-highlight);
+}
+
+.referral figcaption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+  font-size: var(--text-md);
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+.referral figcaption strong {
+  color: var(--color-ink);
+  font-weight: var(--weight-regular);
+}
+
+.referral-photo {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.project-text .path {
+  font-family: var(--font-display);
+  font-size: var(--text-heading);
+  line-height: 1.2;
+}
+
+/* Case studies: four cards in a 2 × 2 grid. The grid also carries
+   .project-gallery so lightbox.js opens the Wall Station pages; these
+   rules undo that class's layout and the media-link/project-media looks. */
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+  margin-top: var(--space-8);
+}
+
+.case-grid .card {
+  border-radius: var(--radius-lg);
+}
+
+.case-grid .project-media {
+  border-radius: 0;
+}
+
+.case-notes {
+  max-width: 660px;
+  margin: var(--space-7) 0 0 calc(50% + var(--space-5) / 2);
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-md);
+  line-height: 1.5;
+}
+
+.case-notes li + li {
+  margin-top: var(--space-3);
+}
+
+.thanks-line {
+  margin-top: var(--space-6);
+}
+
+@media (max-width: 760px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .project-text > figure {
+    grid-column: 1;
+  }
+
+  .case-notes {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .case-grid {
+    grid-template-columns: 1fr;
+  }
+}
