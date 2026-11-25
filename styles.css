@@ -1322,6 +1322,8 @@ a.card:focus-visible .card-info {
   --bh-black: #0d0808;
   --bh-red: #3b0707;
   --bh-text: #ecdcdc;
+  /* Brighter red for highlighted words: #3b0707 is too dark to read on black */
+  --bh-red-bright: #e0302d;
 
   --cream: var(--bh-text);
   --charcoal: var(--bh-text);
@@ -1357,6 +1359,12 @@ a.card:focus-visible .card-info {
 
 .theme-behaviour .card::before {
   box-shadow: none;
+}
+
+/* Key words: bold and red, one or two per section */
+.theme-behaviour .hl {
+  color: var(--bh-red-bright);
+  font-weight: 600;
 }
 
 /* Titles sit on the dark hover overlay, so they stay white */
